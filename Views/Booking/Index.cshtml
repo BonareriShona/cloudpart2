@@ -1,0 +1,62 @@
+﻿@model IEnumerable<EventEase.Models.Booking>
+
+@{
+    ViewData["Title"] = "Index";
+    var currentSearch = Context.Request.Query["searchString"];
+}
+
+<h1>Booking List</h1>
+
+<!-- Search Form -->
+<form method="get" class="mb-4">
+    <div class="row g-2 align-items-center">
+        <div class="col-auto">
+            <input type="text" class="form-control" id="searchString" name="searchString" value="@currentSearch" placeholder="Search by event or venue" />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Create New Booking</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Event)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Venue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().BookingDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @(item.Event?.EventName ?? "No Event")
+                </td>
+                <td>
+                    @(item.Venue?.VenueName ?? "No Venue")
+                </td>
+                <td>
+                    @item.BookingDate.ToString("yyyy-MM-dd")
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.BookingId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.BookingId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.BookingId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
